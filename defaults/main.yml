@@ -125,6 +125,9 @@ deny_groups:
 ssh_max_startups: "10:30:100"
 # 5.2.22 Ensure SSH MaxSessions is limited
 ssh_max_sessions: 10
+# 5.3.2 Lockout for failed password attempts
+pass_failed_unlock_time_sec: 900
+pass_failed_attempts_max: 5
 # 5.4.1.1 Ensure password expiration is 365 days or less
 pass_expire_in_days: 300
 pass_warn_age: 7
