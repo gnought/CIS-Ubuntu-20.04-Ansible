@@ -299,13 +299,16 @@
          1.1.13 Ensure nosuid option set on /var/tmp partition\n
          1.1.14 Ensure noexec option set on /var/tmp partition"
   block:
-    - name: 1.1.12 Ensure nodev option set on /var/tmp partitions
+    - name: Find /var/tmp exists
       shell: |
-        mount | grep "on /var/tmp" && true || true
-      register: vartemp
-    - name: /var/tmp partitions
-      debug:
-        msg: "{{ vartemp.stdout_lines }}"
+          findmnt -n /var/tmp
+      register: out_mnt_vartmp
+      ignore_errors: yes
+    - when: out_mnt_vartmp.rc==0
+      ansible.posix.mount:
+        path: /var/tmp
+        state: mounted
+        opts: nodev,nosuid,noexec
   tags:
     - section1
     - level_2_server
