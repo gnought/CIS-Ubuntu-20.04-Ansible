@@ -244,7 +244,7 @@
     src: tmpfs
     state: mounted
     fstype: tmpfs
-    opts: "defaults,nodev,nosuid,noexec"
+    opts: defaults,nodev,nosuid,noexec
   tags:
     - section1
     - level_1_server
