@@ -140,14 +140,42 @@
     - filesystems
     - hfsplus
     - modprobe
-# 1.1.1.6 Ensure mounting of udf filesystems is disabled
+# 1.1.1.6 Ensure mounting of squashfs filesystems is disabled
+# The squashfs filesystem type is a compressed read-only Linux filesystem embedded in small footprint systems (similar to cramfs). A squashfs image can be used without having to first decompress the image.
+# Disabling squashfs will prevent the use of snap. Snap is a package manager for Linux for installing Snap packages.
+- name: 1.1.1.6 Ensure mounting of squashfs filesystems is disabled
+  block:
+    - name: 1.1.1.6 Ensure mounting of squashfs filesystems is disabled
+      lineinfile:
+        dest: /etc/modprobe.d/CIS.conf
+        regexp: "^(#)?install squashfs(\\s|$)"
+        line: "install squashfs /bin/true"
+        state: present
+        owner: root
+        group: root
+        mode: 0644
+        create: yes
+    - name: 1.1.1.6 Ensure mounting of squashfs filesystems is disabled | modprobe
+      modprobe:
+        name: squashfs
+        state: absent
+  when: disable_squashfs
+  tags:
+    - section1
+    - level_1_server
+    - level_1_workstation
+    - 1.1.1.6
+    - filesystems
+    - udf
+    - modprobe
+# 1.1.1.7 Ensure mounting of udf filesystems is disabled
 # The udf filesystem type is the universal disk format used to implement ISO/IEC 13346 and
 # ECMA-167 specifications. This is an open vendor filesystem type for data storage on a
 # broad range of media. This filesystem type is necessary to support writing DVDs and newer
 # optical disc formats.
-- name: 1.1.1.6 Ensure mounting of udf filesystems is disabled
+- name: 1.1.1.7 Ensure mounting of udf filesystems is disabled
   block:
-    - name: 1.1.1.6 Ensure mounting of udf filesystems is disabled
+    - name: 1.1.1.7 Ensure mounting of udf filesystems is disabled
       lineinfile:
         dest: /etc/modprobe.d/CIS.conf
         regexp: "^(#)?install udf(\\s|$)"
@@ -157,7 +185,7 @@
         group: root
         mode: 0644
         create: yes
-    - name: 1.1.1.6 Ensure mounting of udf filesystems is disabled | modprobe
+    - name: 1.1.1.7 Ensure mounting of udf filesystems is disabled | modprobe
       modprobe:
         name: udf
         state: absent
@@ -166,41 +194,9 @@
     - section1
     - level_1_server
     - level_1_workstation
-    - 1.1.1.6
-    - filesystems
-    - udf
-    - modprobe
-# 1.1.1.7 Ensure mounting of FAT filesystems is limited
-# The FAT filesystem format is primarily used on older windows systems and portable USB
-# drives or flash modules. It comes in three types FAT12 , FAT16 , and FAT32 all of which are
-# supported by the vfat kernel module.
-# Note:
-# The FAT filesystem format is used by UEFI systems for the EFI boot partition. Disabling the
-# vfat module can prevent boot on UEFI systems.
-- name: 1.1.1.7 Ensure mounting of FAT filesystems is limited
-  block:
-    - name: 1.1.1.7 Ensure mounting of FAT filesystems is limited
-      lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
-        regexp: "^(#)?install vfat(\\s|$)"
-        line: "install vfat /bin/true"
-        state: present
-        owner: root
-        group: root
-        mode: 0644
-        create: yes
-    - name: 1.1.1.7 Ensure mounting of FAT filesystems is limited | modprobe
-      modprobe:
-        name: vfat
-        state: absent
-  when: disable_fat
-  tags:
-    - section1
-    - level_2_server
-    - level_2_workstation
     - 1.1.1.7
     - filesystems
-    - fat
+    - udf
     - modprobe
 #
 # 1.1.2 Ensure /tmp is configured

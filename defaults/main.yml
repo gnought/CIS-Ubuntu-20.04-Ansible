@@ -5,8 +5,9 @@ disable_freevxfs: yes
 disable_jffs2: yes
 disable_hfs: yes
 disable_hfsplus: yes
+# disable squashfs will break snapd
+disable_squashfs: no
 disable_udf: yes
-disable_fat: yes
 temp_dir_size: 1G
 # 1.5.1 Ensure bootloader password is set (using grub): default is no
 set_bootloader_credentials: no
