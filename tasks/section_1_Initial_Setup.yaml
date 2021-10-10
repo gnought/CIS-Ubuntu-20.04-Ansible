@@ -833,8 +833,8 @@
     - name: 1.6.4 Ensure core dumps are restricted | reload
       service:
         name: systemd-coredump.socket
-        daemon_reload: true
-        enabled: true
+        daemon_reload: yes
+        enabled: yes
         state: restarted
   tags:
     - section1
