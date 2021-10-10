@@ -7,7 +7,7 @@
   block:
     - name: 1.1.1.1 Ensure mounting of cramfs filesystems is disabled
       lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
+        dest: /etc/modprobe.d/cis-hardening.conf
         regexp: "^(#)?install cramfs(\\s|$)"
         line: install cramfs /bin/true
         state: present
@@ -35,7 +35,7 @@
   block:
     - name: 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled
       lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
+        dest: /etc/modprobe.d/cis-hardening.conf
         regexp: "^(#)?install freevxfs"
         line: install freevxfs /bin/true
         state: present
@@ -63,7 +63,7 @@
   block:
     - name: 1.1.1.3 Ensure mounting of jffs2 filesystems is disabled
       lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
+        dest: /etc/modprobe.d/cis-hardening.conf
         regexp: "^(#)?install jffs2(\\s|$)"
         line: install jffs2 /bin/true
         state: present
@@ -91,7 +91,7 @@
   block:
     - name: 1.1.1.4 Ensure mounting of hfs filesystems is disabled
       lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
+        dest: /etc/modprobe.d/cis-hardening.conf
         regexp: "^(#)?install hfs(\\s|$)"
         line: install hfs /bin/true
         state: present
@@ -119,7 +119,7 @@
   block:
     - name: 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled
       lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
+        dest: /etc/modprobe.d/cis-hardening.conf
         regexp: "^(#)?install hfsplus(\\s|$)"
         line: install hfsplus /bin/true
         state: present
@@ -147,7 +147,7 @@
   block:
     - name: 1.1.1.6 Ensure mounting of squashfs filesystems is disabled
       lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
+        dest: /etc/modprobe.d/cis-hardening.conf
         regexp: "^(#)?install squashfs(\\s|$)"
         line: "install squashfs /bin/true"
         state: present
@@ -177,7 +177,7 @@
   block:
     - name: 1.1.1.7 Ensure mounting of udf filesystems is disabled
       lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
+        dest: /etc/modprobe.d/cis-hardening.conf
         regexp: "^(#)?install udf(\\s|$)"
         line: "install udf /bin/true"
         state: present
@@ -438,7 +438,7 @@
   block:
     - name: 1.1.24 Disable USB Storage | modprobe
       lineinfile:
-        dest: /etc/modprobe.d/CIS.conf
+        dest: /etc/modprobe.d/cis-hardening.conf
         regexp: "^(#)?install usb-storage(\\s|$)"
         line: install usb-storage /bin/true
         state: present
