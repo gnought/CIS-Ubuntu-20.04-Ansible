@@ -3,7 +3,7 @@
 # 6.1 System File Permission
 # 6.1.1 Audit system file permissions
 - name: 6.1.1 Audit system file permissions
-  become: true
+  become: yes
   block:
     - name: 6.1.1 Audit system file permissions
       script: 6_1_1.sh
@@ -11,7 +11,7 @@
     - name: 6.1.1 Audit system file permissions | save output to file
       copy:
         dest: "{{ outputfiles }}/6.1.1"
-        content: "{{ output_6_1_1.stdout_lines }}"
+        content: "{{ output_6_1_1.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -123,12 +123,12 @@
     - name: 6.1.10 Ensure no world writable files exist | save output
       copy:
         dest: "{{ outputfiles }}/6.1.10"
-        content: "{{ output_6_1_10.stdout_lines }}"
+        content: "{{ output_6_1_10.stdout_lines | d([]) }}"
     - name: 6.1.10 Ensure no world writable files exist | fix permission
       file:
         path: "{{ item }}"
-        mode: "o-w"
-      with_items: "{{ output_6_1_10.stdout_lines }}"
+        mode: o-w
+      with_items: "{{ output_6_1_10.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -144,13 +144,13 @@
     - name: 6.1.11 Ensure no unowned files or directories exist | Save output
       copy:
         dest: "{{ outputfiles }}/6.1.11"
-        content: "{{ output_6_1_11.stdout_lines }}"
+        content: "{{ output_6_1_11.stdout_lines | d([]) }}"
     - name: 6.1.11 Ensure no unowned files or directories exist | Fix
       file:
         path: "{{ item }}"
         owner: "{{ withoutOwnerFileDirOwner }}"
         group: "{{ withoutGroupFilesDirGroup }}"
-      with_items: "{{ output_6_1_11.stdout_lines }}"
+      with_items: "{{ output_6_1_11.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -165,13 +165,13 @@
     - name: 6.1.12 Ensure no ungrouped files or directories exist | Save output
       copy:
         dest: "{{ outputfiles }}/6.1.12"
-        content: "{{ output_6_1_12.stdout_lines }}"
+        content: "{{ output_6_1_12.stdout_lines | d([]) }}"
     - name: 6.1.12 Ensure no ungrouped files or directories exist | Fix
       file:
         path: "{{ item }}"
         owner: "{{ withoutOwnerFileDirOwner }}"
         group: "{{ withoutGroupFilesDirGroup }}"
-      with_items: "{{ output_6_1_12.stdout_lines }}"
+      with_items: "{{ output_6_1_12.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -186,12 +186,12 @@
     - name: 6.1.13 Audit SUID executables | save output
       copy:
         dest: "{{ outputfiles }}/6.1.13"
-        content: "{{ output_6_1_13.stdout_lines }}"
+        content: "{{ output_6_1_13.stdout_lines | d([]) }}"
     # - name: 6.1.13 Audit SUID executables | fix
     #   file:
     #     path: "{{ item }}"
-    #     mode: "-s"
-    #   with_items: "{{ output_6_1_13.stdout_lines }}"
+    #     mode: -s
+    #   with_items: "{{ output_6_1_13.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -207,12 +207,12 @@
     - name: 6.1.14 Audit SGID executables | save output
       copy:
         dest: "{{ outputfiles }}/6.1.14"
-        content: "{{ output_6_1_14.stdout_lines }}"
+        content: "{{ output_6_1_14.stdout_lines | d([]) }}"
     # - name: 6.1.14 Audit SGID executables | fix
     #   file:
     #     path: "{{ item }}"
-    #     mode: "-s"
-    #   with_items: "{{ output_6_1_14.stdout_lines }}"
+    #     mode: -s
+    #   with_items: "{{ output_6_1_14.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -223,14 +223,14 @@
 # 6.2.1 Ensure password fields are not empty
 - name: 6.2.1 Ensure password fields are not empty
   block:
-    - name: 6.2.1  Ensure password fields are not empty | list
+    - name: 6.2.1 Ensure password fields are not empty | list
       shell: |
         awk -F: '($2 == "" ) { print $1 }' /etc/shadow
       register: output_6_2_1
     - name: 6.2.1 Ensure password fields are not empty | Save output
       copy:
         dest: "{{ outputfiles }}/6.2.1"
-        content: "{{ output_6_2_1.stdout_lines }}"
+        content: "{{ output_6_2_1.stdout_lines | d([]) }}"
     - name: 6.2.1 Ensure password fields are not empty | Lock account
       user:
         name: "{{ item }}"
@@ -252,13 +252,13 @@
     - name: 6.2.2 Ensure root is the only UID 0 account | Save output
       copy:
         dest: "{{ outputfiles }}/6.2.2"
-        content: "{{ output_6_2_2.stdout_lines }}"
+        content: "{{ output_6_2_2.stdout_lines | d([]) }}"
     # - name: 6.2.2 Ensure root is the only UID 0 account | Lock account
     #   user:
     #     name: "{{ item }}"
     #     uid: 1992
     #     force: yes
-    #   with_items: "{{ output_6_2_2.stdout_lines }}"
+    #   with_items: "{{ output_6_2_2.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -297,7 +297,7 @@
     - name: 6.2.4 Ensure all users' home directories exist | save
       copy:
         dest: "{{ outputfiles }}/6.2.4"
-        content: "{{ output_6_2_4.stdout_lines }}"
+        content: "{{ output_6_2_4.stdout_lines | d([]) }}"
     - name: 6.2.4 Ensure all users' home directories exist | fix
       user:
         name: "{{ item }}"
@@ -317,11 +317,11 @@
     - name: 6.2.5 Ensure users' home directories permissions are 750 or more restrictive - save
       copy:
         dest: "{{ outputfiles }}/6.2.5"
-        content: "{{ output_6_2_5.stdout_lines }}"
+        content: "{{ output_6_2_5.stdout_lines | d([]) }}"
     - name: 6.2.5 Ensure users home directories permissions are 750 or more restrictive - fix
       file:
         name: "{{ item }}"
-        mode: "g-w,o-rwx"
+        mode: g-w,o-rwx
       with_items: "{{ output_6_2_5.stdout_lines | d([]) }}"
   tags:
     - section6
@@ -336,7 +336,7 @@
       register: output_6_2_6
     - name: 6.2.6 Ensure users own their home directories | Var
       set_fact:
-        output_6_2_6_list: "{{ output_6_2_6.stdout_lines | list }}"
+        output_6_2_6_list: "{{ output_6_2_6.stdout_lines | d([]) | list }}"
     - name: 6.2.6 Ensure users own their home directories | save output
       copy:
         dest: "{{ outputfiles }}/6.2.6"
@@ -368,7 +368,7 @@
       file:
         path: "{{ item.split()[-1] }}"
         mode: g-w,o-w
-      with_items: "{{ output_6_2_7.stdout_lines }}"
+      with_items: "{{ output_6_2_7.stdout_lines | d([]) }}"
       when:
         - fix_dot_file_permissions
         - output_6_2_7.stdout

@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 [Time]
-NTP={{ timesync_ntp_hosts | default("") | join(" ") }}
+NTP={{ timesync_ntp_hosts | d("") | join(" ") }}
 FallbackNTP={{ timesync_fallback_ntp_hosts | join(" ") }}

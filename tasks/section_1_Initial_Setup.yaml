@@ -9,12 +9,12 @@
       lineinfile:
         dest: /etc/modprobe.d/CIS.conf
         regexp: "^(#)?install cramfs(\\s|$)"
-        line: "install cramfs /bin/true"
+        line: install cramfs /bin/true
         state: present
         owner: root
         group: root
         mode: 0644
-        create: true
+        create: yes
     - name: 1.1.1.1 Ensure mounting of cramfs filesystems is disabled | modprobe
       modprobe:
         name: cramfs
@@ -37,9 +37,9 @@
       lineinfile:
         dest: /etc/modprobe.d/CIS.conf
         regexp: "^(#)?install freevxfs"
-        line: "install freevxfs /bin/true"
+        line: install freevxfs /bin/true
         state: present
-        create: true
+        create: yes
     - name: 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled | modprobe
       modprobe:
         name: freevxfs
@@ -62,9 +62,9 @@
       lineinfile:
         dest: /etc/modprobe.d/CIS.conf
         regexp: "^(#)?install jffs2(\\s|$)"
-        line: "install jffs2 /bin/true"
+        line: install jffs2 /bin/true
         state: present
-        create: true
+        create: yes
     - name: 1.1.1.3 Ensure mounting of jffs2 filesystems is disabled
       modprobe:
         name: jffs2
@@ -87,9 +87,9 @@
       lineinfile:
         dest: /etc/modprobe.d/CIS.conf
         regexp: "^(#)?install hfs(\\s|$)"
-        line: "install hfs /bin/true"
+        line: install hfs /bin/true
         state: present
-        create: true
+        create: yes
     - name: 1.1.1.4 Ensure mounting of hfs filesystems is disabled | modprobe
       modprobe:
         name: hfs
@@ -112,9 +112,9 @@
       lineinfile:
         dest: /etc/modprobe.d/CIS.conf
         regexp: "^(#)?install hfsplus(\\s|$)"
-        line: "install hfsplus /bin/true"
+        line: install hfsplus /bin/true
         state: present
-        create: true
+        create: yes
     - name: 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled | modprobe
       modprobe:
         name: hfsplus
@@ -141,7 +141,7 @@
         regexp: "^(#)?install udf(\\s|$)"
         line: "install udf /bin/true"
         state: present
-        create: true
+        create: yes
     - name: 1.1.1.6 Ensure mounting of udf filesystems is disabled | modprobe
       modprobe:
         name: udf
@@ -170,7 +170,7 @@
         regexp: "^(#)?install vfat(\\s|$)"
         line: "install vfat /bin/true"
         state: present
-        create: true
+        create: yes
     - name: 1.1.1.7 Ensure mounting of FAT filesystems is limited | modprobe
       modprobe:
         name: vfat
@@ -205,8 +205,8 @@
         owner: root
         group: root
         mode: 0644
-        force: true
-        remote_src: true
+        force: yes
+        remote_src: yes
     - name: 1.1.2 Ensure /tmp is configured | edit file
       lineinfile:
         dest: /etc/systemd/system/tmp.mount
@@ -400,7 +400,7 @@
     - name: 1.1.23 Disable Automounting | service disable
       service:
         name: autofs
-        enabled: false
+        enabled: no
       ignore_errors: yes
     - name: 1.1.23 Disable Automounting | package remove
       apt:
@@ -426,9 +426,9 @@
       lineinfile:
         dest: /etc/modprobe.d/CIS.conf
         regexp: "^(#)?install usb-storage(\\s|$)"
-        line: "install usb-storage /bin/true"
+        line: install usb-storage /bin/true
         state: present
-        create: true
+        create: yes
     - name: 1.1.24 Disable USB Storage
       modprobe:
         name: usb-storage
@@ -490,7 +490,7 @@
   apt:
     name: sudo
     state: present
-    install_recommends: false
+    install_recommends: no
   tags:
     - section1
     - level_1_server
@@ -507,8 +507,8 @@
     dest: /etc/sudoers
     state: present
     regexp: "^Defaults use_pty"
-    line: "Defaults use_pty"
-    validate: "visudo -cf %s"
+    line: Defaults use_pty
+    validate: visudo -cf %s
   tags:
     - section1
     - level_1_server
@@ -524,9 +524,9 @@
   lineinfile:
     dest: /etc/sudoers
     state: present
-    regexp: "^Defaults logfile.*"
-    line: 'Defaults logfile="/var/log/sudo.log"'
-    validate: "visudo -cf %s"
+    regexp: "^Defaults logfile=.*"
+    line: Defaults logfile="/var/log/sudo.log"
+    validate: visudo -cf %s
   tags:
     - section1
     - level_1_server
@@ -549,24 +549,24 @@
   block:
     - name: 1.4.1 Ensure AIDE is installed
       apt:
-        name: ["nullmailer", "aide-common", "aide"]
+        name: [nullmailer, aide-common, aide]
         state: present
-        install_recommends: false
+        install_recommends: no
     - name: Configure default AIDE excludes file
       copy:
-        src: "files/1_4_1.txt"
-        dest: "/etc/aide/aide.conf.d/00_local_excludes"
+        src: files/1_4_1.txt
+        dest: /etc/aide/aide.conf.d/00_local_excludes
     - name: Simplify AIDE checksums
       lineinfile:
         regexp: '^Checksums.*='
         line: "Checksums = {{ aide_checksums }}"
-        path: "/etc/aide/aide.conf"
+        path: /etc/aide/aide.conf
         state: present
       when: (aide_checksums is defined) and (aide_checksums| length > 0)
     - name: Add extra AIDE exclude paths
       lineinfile:
         line: "{{ item }}"
-        path: "/etc/aide/aide.conf.d/00_local_excludes"
+        path: /etc/aide/aide.conf.d/00_local_excludes
         state: present
       loop: "{{ aide_exclude_paths }}"
       when: (aide_exclude_paths is defined) and (aide_exclude_paths| length > 0)
@@ -593,12 +593,12 @@
   cron:
     name: Run AIDE integrity check weekly
     user: root
-    minute: "0"
-    hour: "5"
+    minute: 0
+    hour: 5
     day: "*"
     month: "*"
     weekday: "*"
-    job: "/usr/bin/aide.wrapper --config /etc/aide/aide.conf --check"
+    job: /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check
   tags:
     - section1
     - level_1_server
@@ -618,7 +618,7 @@
     - name: 1.5.1 Ensure bootloader password is set - step 1 - check if it isn't already set up
       shell: /bin/grep -e "^[\s]*password" /boot/grub/grub.cfg | /usr/bin/awk '{print} END {if (NR == 0) print "continue" ; else print "stop"}'
       register: result
-      ignore_errors: true
+      ignore_errors: yes
 
     - name: 1.5.1 Ensure bootloader password is set - step 2 - create bootloader password hash
       # bash -c must be used in this strange way or mysterious errors are thrown
@@ -637,7 +637,7 @@
         block: |
           #!/bin/sh
           cat <<EOF
-          set superusers='{{ bootloader_credentials.user }}'
+          set superusers="{{ bootloader_credentials.user }}"
           password_pbkdf2 {{ bootloader_credentials.user }} {{ password.stdout }}
           EOF
         state: present
@@ -667,10 +667,10 @@
 # /boot/grub/grub.cfg with the appropriate grub configuration file for your environment
 - name: 1.5.2 Ensure permissions on bootloader config are configured
   file:
-    path: "/boot/grub/grub.cfg"
+    path: /boot/grub/grub.cfg
     owner: root
     group: root
-    mode: "og-rwx"
+    mode: og-rwx
   tags:
     - section1
     - level_1_server
@@ -684,7 +684,7 @@
     - name: 1.5.3 Ensure authentication required for single user mode - check if a root password already exists
       shell: /bin/grep -e "^root:[\*]:" /etc/shadow | /usr/bin/awk 'END {if (NR != 0) print "continue" ; else print "stop"}'
       register: result
-      ignore_errors: true
+      ignore_errors: yes
 
     - name: 1.5.3 Ensure authentication required for single user mode - create a root password
       # bash must be used or mysterious errors are thrown
@@ -722,7 +722,7 @@
           systems:
           If necessary configure your bootloader to load the new kernel and reboot the system.
           You may need to enable NX or XD support in your bios.
-          {{ xdnx.stdout_lines }}
+          {{ xdnx.stdout_lines | d([]) }}
       ignore_errors: yes
   tags:
     - section1
@@ -735,11 +735,11 @@
 - name: 1.6.2 Ensure address space layout randomization (ASLR) is enabled
   sysctl:
     name: kernel.randomize_va_space
-    value: "2"
+    value: 2
     state: present
-    reload: true
-    sysctl_set: true
-    ignoreerrors: true
+    reload: yes
+    sysctl_set: yes
+    ignore_errors: yes
   tags:
     - section1
     - level_1_server
@@ -770,18 +770,18 @@
     - name: 1.6.4 Ensure core dumps are restricted | sysctl
       sysctl:
         name: fs.suid_dumpable
-        value: "0"
+        value: 0
         state: present
-        reload: true
-        sysctl_set: true
-        ignoreerrors: true
+        reload: yes
+        sysctl_set: yes
+        ignore_errors: yes
     - name: 1.6.4 Ensure core dumps are restricted | limits.conf
       lineinfile:
         dest: /etc/security/limits.conf
         line: "*                hard    core            0"
         regexp: '(^#)?\*\s+hard\s+core\s+[0-9]+'
         state: present
-        create: true
+        create: yes
         insertbefore: "# End of file"
     - name: 1.6.4 Ensure core dumps are restricted | apt
       apt:
@@ -790,18 +790,18 @@
     - name: 1.6.4 Ensure core dumps are restricted | coredump.conf
       lineinfile:
         dest: /etc/systemd/coredump.conf
-        line: "Storage=none"
+        line: Storage=none
         regexp: '(^#)?\s*Storage\s*='
         state: present
-        create: true
+        create: yes
         insertbefore: "# End of file"
     - name: 1.6.4 Ensure core dumps are restricted | coredump.conf
       lineinfile:
         dest: /etc/systemd/coredump.conf
-        line: "ProcessSizeMax=0"
+        line: ProcessSizeMax=0
         regexp: '(^#)?\s*ProcessSizeMax\s*='
         state: present
-        create: true
+        create: yes
         insertbefore: "# End of file"
     - name: 1.6.4 Ensure core dumps are restricted | reload
       shell: systemctl daemon-reload
@@ -823,7 +823,7 @@
 # AppArmor provides Mandatory Access Controls.
 - name: 1.7.1.1 Ensure AppArmor is installed
   apt:
-    name: ["apparmor"]
+    name: apparmor
     state: present
   when: install_apparmor
   tags:
@@ -847,7 +847,7 @@
     - name: 1.7.1.2 Ensure AppArmor is enabled in the bootloader configuration | reload
       shell: |
         update-grub
-      when: output_1_7_1_2  | bool
+      when: output_1_7_1_2 | bool
   tags:
     - section1
     - level_1_server
@@ -896,7 +896,7 @@
     dest: /etc/motd
     owner: root
     group: root
-    mode: "u-x,go-wx"
+    mode: u-x,go-wx
   vars:
     - motd:
       - "{{ custom_motd_file_path }}"
@@ -915,7 +915,7 @@
     dest: /etc/issue
     owner: root
     group: root
-    mode: "u-x,go-wx"
+    mode: u-x,go-wx
   tags:
     - section1
     - level_1_server
@@ -930,7 +930,7 @@
     dest: /etc/issue.net
     owner: root
     group: root
-    mode: "u-x,go-wx"
+    mode: u-x,go-wx
   tags:
     - section1
     - level_1_server
