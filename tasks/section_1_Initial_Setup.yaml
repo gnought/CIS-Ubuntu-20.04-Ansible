@@ -792,7 +792,7 @@
         state: present
         reload: yes
         sysctl_set: yes
-        ignore_errors: yes
+        ignoreerrors: yes
     - name: 1.6.4 Ensure core dumps are restricted | limits.conf
       lineinfile:
         dest: /etc/security/limits.conf
