@@ -39,6 +39,9 @@
         regexp: "^(#)?install freevxfs"
         line: install freevxfs /bin/true
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
     - name: 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled | modprobe
       modprobe:
@@ -89,6 +92,9 @@
         regexp: "^(#)?install hfs(\\s|$)"
         line: install hfs /bin/true
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
     - name: 1.1.1.4 Ensure mounting of hfs filesystems is disabled | modprobe
       modprobe:
@@ -114,6 +120,9 @@
         regexp: "^(#)?install hfsplus(\\s|$)"
         line: install hfsplus /bin/true
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
     - name: 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled | modprobe
       modprobe:
@@ -428,6 +437,9 @@
         regexp: "^(#)?install usb-storage(\\s|$)"
         line: install usb-storage /bin/true
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
     - name: 1.1.24 Disable USB Storage
       modprobe:
