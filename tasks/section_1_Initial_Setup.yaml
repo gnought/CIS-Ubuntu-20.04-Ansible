@@ -300,11 +300,10 @@
          1.1.14 Ensure noexec option set on /var/tmp partition"
   block:
     - name: Find /var/tmp exists
-      shell: |
-          findmnt -n /var/tmp
+      command: findmnt -n /var/tmp
       register: out_mnt_vartmp
       ignore_errors: yes
-    - when: out_mnt_vartmp.rc==0
+    - when: out_mnt_vartmp.rc == 0
       ansible.posix.mount:
         path: /var/tmp
         state: mounted
@@ -319,6 +318,7 @@
     - 1.1.14
     - mount
     - tmp
+    - manual
 # 1.1.15 Ensure separate partition exists for /var/log
 - name: 1.1.15 Ensure separate partition exists for /var/log
   debug:
