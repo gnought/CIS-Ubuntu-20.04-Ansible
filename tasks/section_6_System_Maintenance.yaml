@@ -8,10 +8,13 @@
     - name: 6.1.1 Audit system file permissions
       script: 6_1_1.sh
       register: output_6_1_1
-    - name: 6.1.1 Audit system file permissions | save output to file
+    - name: 6.1.1 Audit system file permissions | save output
       copy:
         dest: "{{ outputfiles }}/6.1.1"
-        content: "{{ output_6_1_1.stdout_lines | d([]) }}"
+        content: "{{ output_6_1_1.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -123,7 +126,10 @@
     - name: 6.1.10 Ensure no world writable files exist | save output
       copy:
         dest: "{{ outputfiles }}/6.1.10"
-        content: "{{ output_6_1_10.stdout_lines | d([]) }}"
+        content: "{{ output_6_1_10.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
     - name: 6.1.10 Ensure no world writable files exist | fix permission
       file:
         path: "{{ item }}"
@@ -141,11 +147,14 @@
     - name: 6.1.11 Ensure no unowned files or directories exist | Find
       shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser 2> /dev/null && true || true
       register: output_6_1_11
-    - name: 6.1.11 Ensure no unowned files or directories exist | Save output
+    - name: 6.1.11 Ensure no unowned files or directories exist | save output
       copy:
         dest: "{{ outputfiles }}/6.1.11"
-        content: "{{ output_6_1_11.stdout_lines | d([]) }}"
-    - name: 6.1.11 Ensure no unowned files or directories exist | Fix
+        content: "{{ output_6_1_11.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
+    - name: 6.1.11 Ensure no unowned files or directories exist | fix
       file:
         path: "{{ item }}"
         owner: "{{ without_owner_files_dir_owner }}"
@@ -159,14 +168,17 @@
 # 6.1.12 Ensure no ungrouped files or directories exist
 - name: 6.1.12 Ensure no ungrouped files or directories exist
   block:
-    - name: 6.1.12 Ensure no ungrouped files or directories exist | Find
+    - name: 6.1.12 Ensure no ungrouped files or directories exist | find
       shell: df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -nogroup 2> /dev/null && true || true
       register: output_6_1_12
-    - name: 6.1.12 Ensure no ungrouped files or directories exist | Save output
+    - name: 6.1.12 Ensure no ungrouped files or directories exist | save output
       copy:
         dest: "{{ outputfiles }}/6.1.12"
-        content: "{{ output_6_1_12.stdout_lines | d([]) }}"
-    - name: 6.1.12 Ensure no ungrouped files or directories exist | Fix
+        content: "{{ output_6_1_12.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
+    - name: 6.1.12 Ensure no ungrouped files or directories exist | fix
       file:
         path: "{{ item }}"
         owner: "{{ without_owner_files_dir_owner }}"
@@ -186,7 +198,10 @@
     - name: 6.1.13 Audit SUID executables | save output
       copy:
         dest: "{{ outputfiles }}/6.1.13"
-        content: "{{ output_6_1_13.stdout_lines | d([]) }}"
+        content: "{{ output_6_1_13.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
     # - name: 6.1.13 Audit SUID executables | fix
     #   file:
     #     path: "{{ item }}"
@@ -207,7 +222,10 @@
     - name: 6.1.14 Audit SGID executables | save output
       copy:
         dest: "{{ outputfiles }}/6.1.14"
-        content: "{{ output_6_1_14.stdout_lines | d([]) }}"
+        content: "{{ output_6_1_14.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
     # - name: 6.1.14 Audit SGID executables | fix
     #   file:
     #     path: "{{ item }}"
@@ -227,11 +245,14 @@
       shell: |
         awk -F: '($2 == "" ) { print $1 }' /etc/shadow
       register: output_6_2_1
-    - name: 6.2.1 Ensure password fields are not empty | Save output
+    - name: 6.2.1 Ensure password fields are not empty | save output
       copy:
         dest: "{{ outputfiles }}/6.2.1"
-        content: "{{ output_6_2_1.stdout_lines | d([]) }}"
-    - name: 6.2.1 Ensure password fields are not empty | Lock account
+        content: "{{ output_6_2_1.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
+    - name: 6.2.1 Ensure password fields are not empty | lock account
       user:
         name: "{{ item }}"
         password_lock: yes
@@ -249,10 +270,13 @@
       shell: |
         awk -F: '($3 == 0) { print $1 }' /etc/passwd | grep -v root && true || true
       register: output_6_2_2
-    - name: 6.2.2 Ensure root is the only UID 0 account | Save output
+    - name: 6.2.2 Ensure root is the only UID 0 account | save output
       copy:
         dest: "{{ outputfiles }}/6.2.2"
-        content: "{{ output_6_2_2.stdout_lines | d([]) }}"
+        content: "{{ output_6_2_2.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
     # - name: 6.2.2 Ensure root is the only UID 0 account | Lock account
     #   user:
     #     name: "{{ item }}"
@@ -274,7 +298,10 @@
     - name: 6.2.3 Ensure root PATH Integrity | save output
       copy:
         dest: "{{ outputfiles }}/6.2.3"
-        content: "{{ output_6_2_3 }}"
+        content: "{{ output_6_2_3.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -294,10 +321,13 @@
             fi
         done
       register: output_6_2_4
-    - name: 6.2.4 Ensure all users' home directories exist | save
+    - name: 6.2.4 Ensure all users' home directories exist | save output
       copy:
         dest: "{{ outputfiles }}/6.2.4"
-        content: "{{ output_6_2_4.stdout_lines | d([]) }}"
+        content: "{{ output_6_2_4.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
     - name: 6.2.4 Ensure all users' home directories exist | fix
       user:
         name: "{{ item }}"
@@ -311,14 +341,17 @@
 # 6.2.5 Ensure users' home directories permissions are 750 or more restrictive
 - name: 6.2.5 Ensure users' home directories permissions are 750 or more restrictive
   block:
-    - name: 6.2.5 Ensure users home directories permissions are 750 or more restrictive - list
+    - name: 6.2.5 Ensure users home directories permissions are 750 or more restrictive | list
       script: 6_2_5.sh
       register: output_6_2_5
-    - name: 6.2.5 Ensure users' home directories permissions are 750 or more restrictive - save
+    - name: 6.2.5 Ensure users' home directories permissions are 750 or more restrictive | save output
       copy:
         dest: "{{ outputfiles }}/6.2.5"
-        content: "{{ output_6_2_5.stdout_lines | d([]) }}"
-    - name: 6.2.5 Ensure users home directories permissions are 750 or more restrictive - fix
+        content: "{{ output_6_2_5.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
+    - name: 6.2.5 Ensure users home directories permissions are 750 or more restrictive | fix
       file:
         name: "{{ item }}"
         mode: g-w,o-rwx
@@ -341,6 +374,9 @@
       copy:
         dest: "{{ outputfiles }}/6.2.6"
         content: "{{ output_6_2_6_list }}"
+        owner: root
+        group: root
+        mode: 0600
     - name: 6.2.6 Ensure users own their home directories | fix
       file:
         path: "{{ item.split(',')[0] }}"
@@ -362,7 +398,10 @@
     - name: 6.2.7 Ensure users' dot files are not group or world writable | save output
       copy:
         dest: "{{ outputfiles }}/6.2.7"
-        content: "{{ output_6_2_7.stdout }}"
+        content: "{{ output_6_2_7.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
     - name: 6.2.7 Ensure users' dot files are not group or world writable | correct file permissions
       # files with go+w will be touched twice, as they figure twice in the filter result
       file:
@@ -387,7 +426,10 @@
     - name: 6.2.8 Ensure no users have .forward files  | save output
       copy:
         dest: "{{ outputfiles }}/6.2.8"
-        content: "{{ output_6_2_8.stdout }}"
+        content: "{{ output_6_2_8.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -403,7 +445,10 @@
     - name: 6.2.9 Ensure no users have .netrc files | save output
       copy:
         dest: "{{ outputfiles }}/6.2.9"
-        content: "{{ output_6_2_9.stdout }}"
+        content: "{{ output_6_2_9.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -419,7 +464,10 @@
     - name: 6.2.10 Ensure users' .netrc Files are not group or world accessible | save output
       copy:
         dest: "{{ outputfiles }}/6.2.10"
-        content: "{{ output_6_2_10.stdout }}"
+        content: "{{ output_6_2_10.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -435,7 +483,10 @@
     - name: 6.2.11 Ensure no users have .rhosts files | save output
       copy:
         dest: "{{ outputfiles }}/6.2.11"
-        content: "{{ output_6_2_11.stdout }}"
+        content: "{{ output_6_2_11.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -457,7 +508,10 @@
     - name: 6.2.12 Ensure all groups in /etc/passwd exist in /etc/group | save output
       copy:
         dest: "{{ outputfiles }}/6.2.12"
-        content: "{{ output_6_2_12 }}"
+        content: "{{ output_6_2_12.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -481,7 +535,10 @@
     - name: 6.2.13 Ensure no duplicate UIDs exist | save output
       copy:
         dest: "{{ outputfiles }}/6.2.13"
-        content: "{{ output_6_2_13 }}"
+        content: "{{ output_6_2_13.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -500,7 +557,10 @@
     - name: 6.2.14 Ensure no duplicate GIDs exist | save output
       copy:
         dest: "{{ outputfiles }}/6.2.14"
-        content: "{{ output_6_2_14 }}"
+        content: "{{ output_6_2_14.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -520,6 +580,9 @@
       copy:
         dest: "{{ outputfiles }}/6.2.15"
         content: "{{ output_6_2_15.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -538,7 +601,10 @@
     - name: 6.2.16 Ensure no duplicate group names exist | save output
       copy:
         dest: "{{ outputfiles }}/2.6.16"
-        content: "{{ output_6_2_16 }}"
+        content: "{{ output_6_2_16.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server
@@ -556,7 +622,10 @@
     - name: 6.2.17 Ensure shadow group is empty | save output
       copy:
         dest: "{{ outputfiles }}/6.2.17"
-        content: "{{ output_6_2_17 }}"
+        content: "{{ output_6_2_17.stdout_lines }}"
+        owner: root
+        group: root
+        mode: 0600
   tags:
     - section6
     - level_1_server

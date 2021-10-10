@@ -67,6 +67,9 @@
         regexp: "^(#)?install jffs2(\\s|$)"
         line: install jffs2 /bin/true
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
     - name: 1.1.1.3 Ensure mounting of jffs2 filesystems is disabled
       modprobe:
@@ -150,6 +153,9 @@
         regexp: "^(#)?install udf(\\s|$)"
         line: "install udf /bin/true"
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
     - name: 1.1.1.6 Ensure mounting of udf filesystems is disabled | modprobe
       modprobe:
@@ -179,6 +185,9 @@
         regexp: "^(#)?install vfat(\\s|$)"
         line: "install vfat /bin/true"
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
     - name: 1.1.1.7 Ensure mounting of FAT filesystems is limited | modprobe
       modprobe:
@@ -568,6 +577,9 @@
       copy:
         src: files/1_4_1.txt
         dest: /etc/aide/aide.conf.d/00_local_excludes
+        owner: root
+        group: root
+        mode: 0644
     - name: Simplify AIDE checksums
       lineinfile:
         regexp: '^Checksums.*='
@@ -793,6 +805,9 @@
         line: "*                hard    core            0"
         regexp: '(^#)?\*\s+hard\s+core\s+[0-9]+'
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
         insertbefore: "# End of file"
     - name: 1.6.4 Ensure core dumps are restricted | apt
@@ -805,6 +820,9 @@
         line: Storage=none
         regexp: '(^#)?\s*Storage\s*='
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
         insertbefore: "# End of file"
     - name: 1.6.4 Ensure core dumps are restricted | coredump.conf
@@ -813,6 +831,9 @@
         line: ProcessSizeMax=0
         regexp: '(^#)?\s*ProcessSizeMax\s*='
         state: present
+        owner: root
+        group: root
+        mode: 0644
         create: yes
         insertbefore: "# End of file"
     - name: 1.6.4 Ensure core dumps are restricted | reload
@@ -870,6 +891,7 @@
 - name: "1.7.1.3 Ensure all AppArmor Profiles are in enforce or complain mode\n
          1.7.1.4 Ensure all AppArmor Profiles are enforcing"
   shell: |
+    set -o pipefail
     find /etc/apparmor.d -maxdepth 1 -type f | while read file
     do
       if grep --quiet "flags\s*=.*complain" "$file"; then
@@ -964,6 +986,9 @@
   template:
     src: files/templates/greeter.dconf-defaults.j2
     dest: /etc/gdm3/greeter.dconf-defaults
+    owner: root
+    group: root
+    mode: 0644
   ignore_errors: yes
   tags:
     - section1

@@ -365,6 +365,9 @@
     dest: /etc/modprobe.d/CIS.conf
     regexp: "^(#)?install dccp(\\s|$)"
     line: install dccp /bin/true
+    owner: root
+    group: root
+    mode: 0644
     create: yes
   tags:
     - section3
@@ -384,6 +387,9 @@
     dest: /etc/modprobe.d/CIS.conf
     regexp: "^(#)?install sctp(\\s|$)"
     line: install sctp /bin/true
+    owner: root
+    group: root
+    mode: 0644
     create: yes
   tags:
     - section3
@@ -401,6 +407,9 @@
     dest: /etc/modprobe.d/CIS.conf
     regexp: "^(#)?install rds(\\s|$)"
     line: install rds /bin/true
+    owner: root
+    group: root
+    mode: 0644
     create: yes
   tags:
     - section3
@@ -415,6 +424,9 @@
     dest: /etc/modprobe.d/CIS.conf
     regexp: "^(#)?install tipc(\\s|$)"
     line: install tipc /bin/true
+    owner: root
+    group: root
+    mode: 0644
     create: yes
   tags:
     - section3
