@@ -395,7 +395,7 @@
     - name: 6.2.7 Ensure users dot files are not group or world writable | list
       script: 6_2_7.sh
       register: output_6_2_7
-    - name: 6.2.7 Ensure users' dot files are not group or world writable | save output
+    - name: 6.2.7 Ensure users dot files are not group or world writable | save output
       copy:
         dest: "{{ outputfiles }}/6.2.7"
         content: "{{ output_6_2_7.stdout_lines }}"
@@ -408,9 +408,7 @@
         path: "{{ item.split()[-1] }}"
         mode: g-w,o-w
       with_items: "{{ output_6_2_7.stdout_lines | d([]) }}"
-      when:
-        - fix_dot_file_permissions
-        - output_6_2_7.stdout
+  when: fix_dot_file_permissions
   tags:
     - section6
     - level_1_server
