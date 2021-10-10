@@ -898,6 +898,7 @@
         aa-enforce "$file"
       fi
     done
+  changed_when: no
   tags:
     - section1
     - level_2_server

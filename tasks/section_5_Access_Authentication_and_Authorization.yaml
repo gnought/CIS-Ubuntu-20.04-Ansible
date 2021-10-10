@@ -661,6 +661,7 @@
 # Using GID 0 for the root account helps prevent root -owned files from accidentally becoming accessible to non-privileged users.
 - name: 5.4.3 Ensure default group for the root account is GID 0
   command: usermod -g 0 root
+  changed_when: no
   tags:
     - section5
     - level_1_server
