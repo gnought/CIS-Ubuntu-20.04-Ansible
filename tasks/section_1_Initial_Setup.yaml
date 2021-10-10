@@ -946,7 +946,7 @@
     - section1
     - level_1_server
     - level_1_workstation
-    - "1.9"
+    - 1.9
 # 1.10 Ensure GDM is removed or login is configured
 - name: 1.10 Ensure GDM is removed or login is configured
   template:
@@ -957,4 +957,4 @@
     - section1
     - level_1_server
     - level_1_workstation
-    - "1.10"
+    - 1.10
