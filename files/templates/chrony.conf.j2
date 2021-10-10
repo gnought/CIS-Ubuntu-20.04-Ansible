@@ -38,14 +38,14 @@ makestep 10 3
 maxupdateskew 100.0
 
 # Allow NTP client access from local network.
-#allow 192.168/16
+# allow 192.168/16
 
 # Listen for commands only on localhost.
 bindcmdaddress 127.0.0.1
 bindcmdaddress ::1
 
 # Serve time even if not synchronized to any NTP server.
-#local stratum 10
+# local stratum 10
 
 keyfile {{ chrony_keys }}
 
@@ -56,4 +56,4 @@ noclientlog
 logchange 0.5
 
 logdir {{ chrony_log_dir }}
-#log measurements statistics tracking
+# log measurements statistics tracking

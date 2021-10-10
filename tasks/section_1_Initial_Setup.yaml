@@ -174,7 +174,7 @@
 # The FAT filesystem format is primarily used on older windows systems and portable USB
 # drives or flash modules. It comes in three types FAT12 , FAT16 , and FAT32 all of which are
 # supported by the vfat kernel module.
-#Note:
+# Note:
 # The FAT filesystem format is used by UEFI systems for the EFI boot partition. Disabling the
 # vfat module can prevent boot on UEFI systems.
 - name: 1.1.1.7 Ensure mounting of FAT filesystems is limited
