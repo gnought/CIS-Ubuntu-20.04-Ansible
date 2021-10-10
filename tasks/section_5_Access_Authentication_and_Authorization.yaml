@@ -99,11 +99,11 @@
       ignore_errors: yes
     - stat:
         path: /etc/cron.allow
-      register: cfile
+      register: out_cfile
     - name: 5.1.8 Ensure cron is restricted to authorized users | /etc/cron.allow
       file:
         path: /etc/cron.allow
-        state: "{{ cfile.stat.exists | ternary(file, touch) }}"
+        state: "{{ out_cfile.stat.exists | ternary(file, touch) }}"
         owner: root
         group: root
         mode: g-wx,o-rwx
@@ -122,11 +122,11 @@
       ignore_errors: yes
     - stat:
         path: /etc/at.allow
-      register: cfile
+      register: out_cfile
     - name: 5.1.9 Ensure at is restricted to authorized users | /etc/at.allow
       file:
         path: /etc/at.allow
-        state: "{{ cfile.stat.exists | ternary(file, touch) }}"
+        state: "{{ out_cfile.stat.exists | ternary(file, touch) }}"
         owner: root
         group: root
         mode: g-wx,o-rwx
@@ -155,7 +155,7 @@
     - name: 5.2.2 Ensure permissions on SSH private host key files are configured | find keys
       shell: |
         find /etc/ssh -xdev -type f -name 'ssh_host_*_key' && true || true
-      register: private_keys
+      register: out_private_keys
     - name: 5.2.2 Ensure permissions on SSH private host key files are configured | fix permissions
       file:
         dest: "{{ item }}"
@@ -163,7 +163,7 @@
         owner: root
         group: root
         mode: 0600
-      with_items: "{{ private_keys.stdout_lines | d([]) }}"
+      with_items: "{{ out_private_keys.stdout_lines | d([]) }}"
   tags:
     - section5
     - level_1_server
@@ -175,7 +175,7 @@
     - name: 5.2.3 Ensure permissions on SSH public host key files are configured | find keys
       shell: |
         find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' && true || true
-      register: public_keys
+      register: out_public_keys
     - name: 5.2.3 Ensure permissions on SSH public host key files are configured | fix permissions
       file:
         dest: "{{ item }}"
@@ -183,7 +183,7 @@
         owner: root
         group: root
         mode: go-wx
-      with_items: "{{ public_keys.stdout_lines | d([]) }}"
+      with_items: "{{ out_public_keys.stdout_lines | d([]) }}"
   tags:
     - section5
     - level_1_server
@@ -624,11 +624,11 @@
             echo "$user"
           fi
         done
-      register: output_5_4_1_5
+      register: out_5_4_1_5
     - name: 5.4.1.5 Ensure all users last password change date is in the past | save output
       copy:
         dest: "{{ outputfiles }}/5.4.1.5"
-        content: "{{ output_5_4_1_5.stdout_lines }}"
+        content: "{{ out_5_4_1_5.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -763,11 +763,11 @@
     - name: 5.5 Ensure root login is restricted to system console | check file
       stat:
         path: /etc/securetty
-      register: securetty
+      register: out_securetty
     - name: 5.5 Ensure root login is restricted to system console | save output
       copy:
         dest: "{{ outputfiles }}/5.5"
-        content: "{{ securetty }}"
+        content: "{{ out_securetty }}"
         owner: root
         group: root
         mode: 0600

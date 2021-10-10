@@ -22,11 +22,11 @@
   block:
     - name: verify no wireless interfaces are active on the system
       script: 3_1_2.sh
-      register: wifiStatus
+      register: out_wifi_status
     - name: 3.1.2 Ensure wireless interfaces are disabled
       script: 3_1_2_disable.sh
       when:
-        - wifiStatus.stdout_lines | first == "Wireless is not enabled"
+        - out_wifi_status.stdout_lines | first == "Wireless is not enabled"
         - disable_wifi
   tags:
     - section3

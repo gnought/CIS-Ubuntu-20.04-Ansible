@@ -396,10 +396,10 @@
     - name: 1.1.22 Ensure sticky bit is set on all world-writable directories | get info
       shell: |
         df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null
-      register: worldWriteableList
+      register: out_world_writable_list
     - name: 1.1.22 Ensure sticky bit is set on all world-writable directories | fix
       script: 1_1_22.sh
-      when: worldWriteableList.stdout_lines |length > 0
+      when: out_world_writable_list.stdout_lines |length > 0
   tags:
     - section1
     - level_1_server
@@ -641,15 +641,15 @@
   block:
     - name: 1.5.1 Ensure bootloader password is set - step 1 - check if it isn't already set up
       shell: /bin/grep -e "^[\s]*password" /boot/grub/grub.cfg | /usr/bin/awk '{print} END {if (NR == 0) print "continue" ; else print "stop"}'
-      register: result
+      register: out_result
       ignore_errors: yes
 
     - name: 1.5.1 Ensure bootloader password is set - step 2 - create bootloader password hash
       # bash -c must be used in this strange way or mysterious errors are thrown
       shell: /bin/bash -c "echo -e '{{ bootloader_credentials.password }}\n{{ bootloader_credentials.password }}' | grub-mkpasswd-pbkdf2" | /bin/grep 'hash of your password' | /usr/bin/awk '{print $7}'
-      register: password
+      register: out_password
       when:
-        - result.stdout == "continue"
+        - out_result.stdout == "continue"
         - bootloader_credentials.user
         - bootloader_credentials.password
 
@@ -662,18 +662,18 @@
           #!/bin/sh
           cat <<EOF
           set superusers="{{ bootloader_credentials.user }}"
-          password_pbkdf2 {{ bootloader_credentials.user }} {{ password.stdout }}
+          password_pbkdf2 {{ bootloader_credentials.user }} {{ out_password.stdout }}
           EOF
         state: present
       when:
-        - result.stdout == "continue"
+        - out_result.stdout == "continue"
         - bootloader_credentials.user
         - bootloader_credentials.password
 
     - name: 1.5.1 Ensure bootloader password is set - step 4 - update grub
       shell: update-grub
       when:
-        - result.stdout == "continue"
+        - out_result.stdout == "continue"
         - bootloader_credentials.user
         - bootloader_credentials.password
   when: set_bootloader_credentials
@@ -707,13 +707,13 @@
   block:
     - name: 1.5.3 Ensure authentication required for single user mode - check if a root password already exists
       shell: /bin/grep -e "^root:[\*]:" /etc/shadow | /usr/bin/awk 'END {if (NR != 0) print "continue" ; else print "stop"}'
-      register: result
+      register: out_result
       ignore_errors: yes
 
     - name: 1.5.3 Ensure authentication required for single user mode - create a root password
       # bash must be used or mysterious errors are thrown
       shell: /bin/bash -c "echo -e '{{ root_password }}\n{{ root_password }}' | passwd root"
-      when: result.stdout == "continue"
+      when: out_result.stdout == "continue"
   when: set_root_password and root_password
   tags:
     - section1
@@ -737,7 +737,7 @@
     - name: 1.6.1 Ensure XD/NX support is enabled
       shell: |
         dmesg | grep -E "NX|XD" | grep " active"
-      register: xdnx
+      register: out_xdnx
       ignore_errors: yes
     - name: 1.6.1 Ensure XD/NX support is enabled
       debug:
@@ -746,7 +746,7 @@
           systems:
           If necessary configure your bootloader to load the new kernel and reboot the system.
           You may need to enable NX or XD support in your bios.
-          {{ xdnx.stdout_lines | d([]) }}
+          {{ out_xdnx.stdout_lines | d([]) }}
       ignore_errors: yes
   tags:
     - section1
@@ -876,11 +876,11 @@
         path: /etc/default/grub
         regexp: '^(GRUB_CMDLINE_LINUX=(?!.*apparmor)\"[^\"]*)(\".*)'
         replace: '\1 apparmor=1 security=apparmor\2'
-      register: output_1_7_1_2
+      register: out_1_7_1_2
     - name: 1.7.1.2 Ensure AppArmor is enabled in the bootloader configuration | reload
       shell: |
         update-grub
-      when: output_1_7_1_2 | bool
+      when: out_1_7_1_2 | bool
   tags:
     - section1
     - level_1_server

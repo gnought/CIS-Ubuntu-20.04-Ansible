@@ -7,11 +7,11 @@
   block:
     - name: 6.1.1 Audit system file permissions
       script: 6_1_1.sh
-      register: output_6_1_1
+      register: out_6_1_1
     - name: 6.1.1 Audit system file permissions | save output
       copy:
         dest: "{{ outputfiles }}/6.1.1"
-        content: "{{ output_6_1_1.stdout_lines }}"
+        content: "{{ out_6_1_1.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -122,11 +122,11 @@
   block:
     - name: 6.1.10 Ensure no world writable files exist | find files
       shell: df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002 2> /dev/null && true || true
-      register: output_6_1_10
+      register: out_6_1_10
     - name: 6.1.10 Ensure no world writable files exist | save output
       copy:
         dest: "{{ outputfiles }}/6.1.10"
-        content: "{{ output_6_1_10.stdout_lines }}"
+        content: "{{ out_6_1_10.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -134,7 +134,7 @@
       file:
         path: "{{ item }}"
         mode: o-w
-      with_items: "{{ output_6_1_10.stdout_lines | d([]) }}"
+      with_items: "{{ out_6_1_10.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -146,11 +146,11 @@
   block:
     - name: 6.1.11 Ensure no unowned files or directories exist | Find
       shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser 2> /dev/null && true || true
-      register: output_6_1_11
+      register: out_6_1_11
     - name: 6.1.11 Ensure no unowned files or directories exist | save output
       copy:
         dest: "{{ outputfiles }}/6.1.11"
-        content: "{{ output_6_1_11.stdout_lines }}"
+        content: "{{ out_6_1_11.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -159,7 +159,7 @@
         path: "{{ item }}"
         owner: "{{ without_owner_files_dir_owner }}"
         group: "{{ without_group_files_dir_group }}"
-      with_items: "{{ output_6_1_11.stdout_lines | d([]) }}"
+      with_items: "{{ out_6_1_11.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -170,11 +170,11 @@
   block:
     - name: 6.1.12 Ensure no ungrouped files or directories exist | find
       shell: df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -nogroup 2> /dev/null && true || true
-      register: output_6_1_12
+      register: out_6_1_12
     - name: 6.1.12 Ensure no ungrouped files or directories exist | save output
       copy:
         dest: "{{ outputfiles }}/6.1.12"
-        content: "{{ output_6_1_12.stdout_lines }}"
+        content: "{{ out_6_1_12.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -183,7 +183,7 @@
         path: "{{ item }}"
         owner: "{{ without_owner_files_dir_owner }}"
         group: "{{ without_group_files_dir_group }}"
-      with_items: "{{ output_6_1_12.stdout_lines | d([]) }}"
+      with_items: "{{ out_6_1_12.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -194,11 +194,11 @@
   block:
     - name: 6.1.13 Audit SUID executables | find
       shell: df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -4000 2> /dev/null && true || true
-      register: output_6_1_13
+      register: out_6_1_13
     - name: 6.1.13 Audit SUID executables | save output
       copy:
         dest: "{{ outputfiles }}/6.1.13"
-        content: "{{ output_6_1_13.stdout_lines }}"
+        content: "{{ out_6_1_13.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -206,7 +206,7 @@
     #   file:
     #     path: "{{ item }}"
     #     mode: -s
-    #   with_items: "{{ output_6_1_13.stdout_lines | d([]) }}"
+    #   with_items: "{{ out_6_1_13.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -218,11 +218,11 @@
   block:
     - name: 6.1.14 Audit SGID executables | find
       shell: df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -2000 2> /dev/null && true || true
-      register: output_6_1_14
+      register: out_6_1_14
     - name: 6.1.14 Audit SGID executables | save output
       copy:
         dest: "{{ outputfiles }}/6.1.14"
-        content: "{{ output_6_1_14.stdout_lines }}"
+        content: "{{ out_6_1_14.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -230,7 +230,7 @@
     #   file:
     #     path: "{{ item }}"
     #     mode: -s
-    #   with_items: "{{ output_6_1_14.stdout_lines | d([]) }}"
+    #   with_items: "{{ out_6_1_14.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -244,11 +244,11 @@
     - name: 6.2.1 Ensure password fields are not empty | list
       shell: |
         awk -F: '($2 == "" ) { print $1 }' /etc/shadow
-      register: output_6_2_1
+      register: out_6_2_1
     - name: 6.2.1 Ensure password fields are not empty | save output
       copy:
         dest: "{{ outputfiles }}/6.2.1"
-        content: "{{ output_6_2_1.stdout_lines }}"
+        content: "{{ out_6_2_1.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -256,7 +256,7 @@
       user:
         name: "{{ item }}"
         password_lock: yes
-      with_items: "{{ output_6_2_1.stdout_lines | d([]) }}"
+      with_items: "{{ out_6_2_1.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -269,11 +269,11 @@
     - name: 6.2.2 Ensure root is the only UID 0 account| list
       shell: |
         awk -F: '($3 == 0) { print $1 }' /etc/passwd | grep -v root && true || true
-      register: output_6_2_2
+      register: out_6_2_2
     - name: 6.2.2 Ensure root is the only UID 0 account | save output
       copy:
         dest: "{{ outputfiles }}/6.2.2"
-        content: "{{ output_6_2_2.stdout_lines }}"
+        content: "{{ out_6_2_2.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -282,7 +282,7 @@
     #     name: "{{ item }}"
     #     uid: 1992
     #     force: yes
-    #   with_items: "{{ output_6_2_2.stdout_lines | d([]) }}"
+    #   with_items: "{{ out_6_2_2.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -294,11 +294,11 @@
   block:
     - name: 6.2.3 Ensure root PATH Integrity | run
       script: 6_2_3.sh
-      register: output_6_2_3
+      register: out_6_2_3
     - name: 6.2.3 Ensure root PATH Integrity | save output
       copy:
         dest: "{{ outputfiles }}/6.2.3"
-        content: "{{ output_6_2_3.stdout_lines }}"
+        content: "{{ out_6_2_3.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -320,11 +320,11 @@
                 echo "${user}"
             fi
         done
-      register: output_6_2_4
+      register: out_6_2_4
     - name: 6.2.4 Ensure all users' home directories exist | save output
       copy:
         dest: "{{ outputfiles }}/6.2.4"
-        content: "{{ output_6_2_4.stdout_lines }}"
+        content: "{{ out_6_2_4.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -332,7 +332,7 @@
       user:
         name: "{{ item }}"
         create_home: yes
-      with_items: "{{ output_6_2_4.stdout_lines | d([]) }}"
+      with_items: "{{ out_6_2_4.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -343,11 +343,11 @@
   block:
     - name: 6.2.5 Ensure users home directories permissions are 750 or more restrictive | list
       script: 6_2_5.sh
-      register: output_6_2_5
+      register: out_6_2_5
     - name: 6.2.5 Ensure users' home directories permissions are 750 or more restrictive | save output
       copy:
         dest: "{{ outputfiles }}/6.2.5"
-        content: "{{ output_6_2_5.stdout_lines }}"
+        content: "{{ out_6_2_5.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -355,7 +355,7 @@
       file:
         name: "{{ item }}"
         mode: g-w,o-rwx
-      with_items: "{{ output_6_2_5.stdout_lines | d([]) }}"
+      with_items: "{{ out_6_2_5.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -366,14 +366,11 @@
   block:
     - name: 6.2.6 Ensure users own their home directories | list
       script: 6_2_6.sh
-      register: output_6_2_6
-    - name: 6.2.6 Ensure users own their home directories | Var
-      set_fact:
-        output_6_2_6_list: "{{ output_6_2_6.stdout_lines | d([]) | list }}"
+      register: out_6_2_6
     - name: 6.2.6 Ensure users own their home directories | save output
       copy:
         dest: "{{ outputfiles }}/6.2.6"
-        content: "{{ output_6_2_6_list }}"
+        content: "{{ out_6_2_6.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -383,7 +380,7 @@
         group: "{{ item.split(',')[1] }}"
         owner: "{{ item.split(',')[1] }}"
         recurse: yes
-      with_items: "{{ output_6_2_6_list }}"
+      with_items: "{{ out_6_2_6.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -394,11 +391,11 @@
   block:
     - name: 6.2.7 Ensure users dot files are not group or world writable | list
       script: 6_2_7.sh
-      register: output_6_2_7
+      register: out_6_2_7
     - name: 6.2.7 Ensure users dot files are not group or world writable | save output
       copy:
         dest: "{{ outputfiles }}/6.2.7"
-        content: "{{ output_6_2_7.stdout_lines }}"
+        content: "{{ out_6_2_7.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -407,7 +404,7 @@
       file:
         path: "{{ item.split()[-1] }}"
         mode: g-w,o-w
-      with_items: "{{ output_6_2_7.stdout_lines | d([]) }}"
+      with_items: "{{ out_6_2_7.stdout_lines | d([]) }}"
   when: fix_dot_file_permissions
   tags:
     - section6
@@ -420,11 +417,11 @@
   block:
     - name: 6.2.8 Ensure no users have .forward files | list
       script: 6_2_8.sh
-      register: output_6_2_8
+      register: out_6_2_8
     - name: 6.2.8 Ensure no users have .forward files  | save output
       copy:
         dest: "{{ outputfiles }}/6.2.8"
-        content: "{{ output_6_2_8.stdout_lines }}"
+        content: "{{ out_6_2_8.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -439,11 +436,11 @@
   block:
     - name: 6.2.9 Ensure no users have .netrc files | list
       script: 6_2_9.sh
-      register: output_6_2_9
+      register: out_6_2_9
     - name: 6.2.9 Ensure no users have .netrc files | save output
       copy:
         dest: "{{ outputfiles }}/6.2.9"
-        content: "{{ output_6_2_9.stdout_lines }}"
+        content: "{{ out_6_2_9.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -458,11 +455,11 @@
   block:
     - name: 6.2.10 Ensure users' .netrc Files are not group or world accessible | list
       script: files/6_2_10.sh
-      register: output_6_2_10
+      register: out_6_2_10
     - name: 6.2.10 Ensure users' .netrc Files are not group or world accessible | save output
       copy:
         dest: "{{ outputfiles }}/6.2.10"
-        content: "{{ output_6_2_10.stdout_lines }}"
+        content: "{{ out_6_2_10.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -477,11 +474,11 @@
   block:
     - name: 6.2.11 Ensure no users have .rhosts files | list
       script: files/6_2_11.sh
-      register: output_6_2_11
+      register: out_6_2_11
     - name: 6.2.11 Ensure no users have .rhosts files | save output
       copy:
         dest: "{{ outputfiles }}/6.2.11"
-        content: "{{ output_6_2_11.stdout_lines }}"
+        content: "{{ out_6_2_11.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -502,11 +499,11 @@
                 echo "Group $i is referenced by /etc/passwd but does not exist in /etc/group"
             fi
         done
-      register: output_6_2_12
+      register: out_6_2_12
     - name: 6.2.12 Ensure all groups in /etc/passwd exist in /etc/group | save output
       copy:
         dest: "{{ outputfiles }}/6.2.12"
-        content: "{{ output_6_2_12.stdout_lines }}"
+        content: "{{ out_6_2_12.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -529,11 +526,11 @@
                 echo "Duplicate UID ($2): $users"
             fi
         done
-      register: output_6_2_13
+      register: out_6_2_13
     - name: 6.2.13 Ensure no duplicate UIDs exist | save output
       copy:
         dest: "{{ outputfiles }}/6.2.13"
-        content: "{{ output_6_2_13.stdout_lines }}"
+        content: "{{ out_6_2_13.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -551,11 +548,11 @@
         cut -d: -f3 /etc/group | sort | uniq -d | while read x; do
             echo "Duplicate GID ($x) in /etc/group"
         done
-      register: output_6_2_14
+      register: out_6_2_14
     - name: 6.2.14 Ensure no duplicate GIDs exist | save output
       copy:
         dest: "{{ outputfiles }}/6.2.14"
-        content: "{{ output_6_2_14.stdout_lines }}"
+        content: "{{ out_6_2_14.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -573,11 +570,11 @@
         cut -d: -f1 /etc/passwd | sort | uniq -d | while read x; do
             echo "Duplicate login name ${x} in /etc/passwd"
         done
-      register: output_6_2_15
+      register: out_6_2_15
     - name: 6.2.15 Ensure no duplicate user names exist | save output
       copy:
         dest: "{{ outputfiles }}/6.2.15"
-        content: "{{ output_6_2_15.stdout_lines }}"
+        content: "{{ out_6_2_15.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -595,11 +592,11 @@
         cut -d: -f1 /etc/group | sort | uniq -d | while read x; do
             echo "Duplicate group name ${x} in /etc/group"
         done
-      register: output_6_2_16
+      register: out_6_2_16
     - name: 6.2.16 Ensure no duplicate group names exist | save output
       copy:
         dest: "{{ outputfiles }}/2.6.16"
-        content: "{{ output_6_2_16.stdout_lines }}"
+        content: "{{ out_6_2_16.stdout_lines }}"
         owner: root
         group: root
         mode: 0600
@@ -616,11 +613,11 @@
       shell: |
         grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group
         awk -F: '($4 == "<shadow-gid>") { print }' /etc/passwd
-      register: output_6_2_17
+      register: out_6_2_17
     - name: 6.2.17 Ensure shadow group is empty | save output
       copy:
         dest: "{{ outputfiles }}/6.2.17"
-        content: "{{ output_6_2_17.stdout_lines }}"
+        content: "{{ out_6_2_17.stdout_lines }}"
         owner: root
         group: root
         mode: 0600

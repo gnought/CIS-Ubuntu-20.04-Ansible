@@ -357,13 +357,13 @@
     - name: 2.2.15 Ensure mail transfer agent is configured for local-only mode
       stat:
         path: /etc/postfix/main.cf
-      register: postfix
+      register: out_postfix
     - name: 2.2.15 Ensure mail transfer agent is configured for local-only mode
       lineinfile:
         dest: /etc/postfix/main.cf
         regexp: "^(#)?inet_interfaces"
         line: inet_interfaces = localhost
-      when: postfix.stat.exists
+      when: out_postfix.stat.exists
   tags:
     - section2
     - level_1_server
