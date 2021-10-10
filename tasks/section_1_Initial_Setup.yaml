@@ -670,7 +670,7 @@
         - bootloader_credentials.password
 
     - name: 1.5.1 Ensure bootloader password is set - step 4 - update grub
-      shell: update-grub
+      command: update-grub
       when:
         - out_result.stdout == "continue"
         - bootloader_credentials.user
@@ -836,7 +836,11 @@
         create: yes
         insertbefore: "# End of file"
     - name: 1.6.4 Ensure core dumps are restricted | reload
-      shell: systemctl daemon-reload
+      service:
+        name: systemd-coredump.socket
+        daemon_reload: true
+        enabled: true
+        state: restarted
   tags:
     - section1
     - level_1_server
