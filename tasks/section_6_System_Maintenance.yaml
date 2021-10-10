@@ -235,9 +235,7 @@
       user:
         name: "{{ item }}"
         password_lock: yes
-      with_items: "{{ output_6_2_1.stdout_lines }}"
-      when:
-        - "{{ output_6_2_1.stdout_lines }}"
+      with_items: "{{ output_6_2_1.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -304,8 +302,7 @@
       user:
         name: "{{ item }}"
         create_home: yes
-      with_items: "{{ output_6_2_4.stdout_lines }}"
-      when: "{{ output_6_2_4.stdout_lines|length > 0 }}"
+      with_items: "{{ output_6_2_4.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server
@@ -325,8 +322,7 @@
       file:
         name: "{{ item }}"
         mode: "g-w,o-rwx"
-      with_items: "{{ output_6_2_5.stdout_lines }}"
-      when: "{{ output_6_2_5.stdout_lines|length > 0 }}"
+      with_items: "{{ output_6_2_5.stdout_lines | d([]) }}"
   tags:
     - section6
     - level_1_server

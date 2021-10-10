@@ -163,8 +163,7 @@
         owner: root
         group: root
         mode: 0600
-      with_items: "{{ private_keys.stdout_lines }}"
-      when: "{{ private_keys.stdout_lines|length > 0 }}"
+      with_items: "{{ private_keys.stdout_lines | d([]) }}"
   tags:
     - section5
     - level_1_server
@@ -184,8 +183,7 @@
         owner: root
         group: root
         mode: "go-wx"
-      with_items: "{{ public_keys.stdout_lines }}"
-      when: "{{ public_keys.stdout_lines|length > 0 }}"
+      with_items: "{{ public_keys.stdout_lines | d([]) }}"
   tags:
     - section5
     - level_1_server
@@ -376,32 +374,28 @@
         dest: /etc/ssh/sshd_config
         regexp: "^AllowUsers"
         line: "AllowUsers {{ allowed_users }}"
-      when:
-        - "{{ allowed_users|length > 0 }}"
+      when: allowed_users | length > 0
     - name: 5.2.17 Ensure SSH access is limited | allow groups
       lineinfile:
         state: present
         dest: /etc/ssh/sshd_config
         regexp: "^AllowGroups"
         line: "AllowGroups {{ allowed_groups }}"
-      when:
-        - allowed_groups != "None"
+      when: allowed_groups != "None"
     - name: 5.2.17 Ensure SSH access is limited | denyusers
       lineinfile:
         state: present
         dest: /etc/ssh/sshd_config
         regexp: "^DenyUsers"
         line: "DenyUsers {{ deny_users }}"
-      when:
-        - deny_users != "None"
+      when: deny_users != "None"
     - name: 5.2.17 Ensure SSH access is limited | denygroups
       lineinfile:
         state: present
         dest: /etc/ssh/sshd_config
         regexp: "^DenyGroups"
         line: "DenyGroups {{ deny_groups }}"
-      when:
-        - deny_groups != "None"
+      when: deny_groups != "None"
   tags:
     - section5
     - level_1_server

@@ -900,7 +900,7 @@
   vars:
     - motd:
       - "{{ custom_motd_file_path }}"
-      - "files/templates/motd.j2"
+      - files/templates/motd.j2
   tags:
     - section1
     - level_1_server

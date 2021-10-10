@@ -58,7 +58,7 @@
         name: "ntp"
         state: started
         enabled: true
-  when: "{{enableNTP}}"
+  when: enableNTP
 
   tags:
     - section2
@@ -95,7 +95,7 @@
         name: systemd-timesyncd.service
         enabled: yes
         state: started
-  when: "{{enable_systemdtimesyncd}} == True"
+  when: enable_systemdtimesyncd
   tags:
     - section2
     - level_1_server
@@ -121,7 +121,7 @@
         group: root
         mode: 0644
       notify: RestartChronyservice
-  when: "{{chronyEnable}} == True"
+  when: chronyEnable
   tags:
     - section2
     - level_1_server
@@ -144,13 +144,13 @@
         owner: root
         group: root
         mode: 0644
-      when: "'ntp' in ansible_facts.packages"
+      when: "ntp" in ansible_facts.packages
     - name: 2.2.1.4 Ensure ntp is configured | modify /etc/init.d/ntp
       lineinfile:
         dest: /etc/init.d/ntp
         regexp: "^RUNASUSER"
         line: "RUNASUSER=ntp"
-      when: "'ntp' in ansible_facts.packages"
+      when: "ntp" in ansible_facts.packages
   tags:
     - section2
     - level_1_server
@@ -494,14 +494,14 @@
         Review the output to ensure that all services listed are required on the system. If a listed
         service is not required, remove the package containing the service. If the package
         containing a non-essential service is required, stop and mask the non-essential service.
-        Code Meaning 
-        S File size differs. 
-        M File mode differs (includes permissions and file type). 
-        5 The MD5 checksum differs. 
-        D The major and minor version numbers differ on a device file. 
-        L A mismatch occurs in a link. 
-        U The file ownership differs. 
-        G The file group owner differs. 
+        Code Meaning
+        S File size differs.
+        M File mode differs (includes permissions and file type).
+        5 The MD5 checksum differs.
+        D The major and minor version numbers differ on a device file.
+        L A mismatch occurs in a link.
+        U The file ownership differs.
+        G The file group owner differs.
         T The file time (mtime) differs.
   tags:
     - section2
