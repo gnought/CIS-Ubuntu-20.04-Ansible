@@ -144,13 +144,13 @@
         owner: root
         group: root
         mode: 0644
-      when: "ntp" in ansible_facts.packages
+      when: ntp in ansible_facts.packages
     - name: 2.2.1.4 Ensure ntp is configured | modify /etc/init.d/ntp
       lineinfile:
         dest: /etc/init.d/ntp
         regexp: "^RUNASUSER"
         line: "RUNASUSER=ntp"
-      when: "ntp" in ansible_facts.packages
+      when: ntp in ansible_facts.packages
   tags:
     - section2
     - level_1_server
