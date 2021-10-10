@@ -144,7 +144,7 @@
 # 6.1.11 Ensure no unowned files or directories exist
 - name: 6.1.11 Ensure no unowned files or directories exist
   block:
-    - name: 6.1.11 Ensure no unowned files or directories exist | Find
+    - name: 6.1.11 Ensure no unowned files or directories exist | find
       shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser 2> /dev/null && true || true
       register: out_6_1_11
     - name: 6.1.11 Ensure no unowned files or directories exist | save output
@@ -277,7 +277,7 @@
         owner: root
         group: root
         mode: 0600
-    # - name: 6.2.2 Ensure root is the only UID 0 account | Lock account
+    # - name: 6.2.2 Ensure root is the only UID 0 account | lock account
     #   user:
     #     name: "{{ item }}"
     #     uid: 1992

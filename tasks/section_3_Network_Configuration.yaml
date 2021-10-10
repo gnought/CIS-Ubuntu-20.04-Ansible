@@ -75,9 +75,9 @@
         state: present
         reload: yes
       # when: ipv6_is_enabled
-    - name: 3.2.2 Ensure IP forwarding is disabled | IPV4 load
+    - name: 3.2.2 Ensure IP forwarding is disabled | ipv4 load
       script: 3_2_2.sh
-    - name: 3.2.2 Ensure IP forwarding is disabled | IPV6 load
+    - name: 3.2.2 Ensure IP forwarding is disabled | ipv6 load
       script: 3_2_2_2.sh
       # when: ipv6_is_enabled
   tags:

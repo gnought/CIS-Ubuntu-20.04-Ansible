@@ -612,7 +612,7 @@
 # been included as an optional alternative to using cron
 # Ubuntu advises using /usr/bin/aide.wrapper rather than calling /usr/bin/aide
 # directly in order to protect the database and prevent conflicts
-- name: 1.4.2 Ensure filesystem integrity is regularly checked | Cron
+- name: 1.4.2 Ensure filesystem integrity is regularly checked | cron
   cron:
     name: Run AIDE integrity check weekly
     user: root
