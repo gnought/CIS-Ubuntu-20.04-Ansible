@@ -74,12 +74,12 @@
         value: 0
         state: present
         reload: yes
-      # when: IPv6_is_enabled
+      # when: ipv6_is_enabled
     - name: 3.2.2 Ensure IP forwarding is disabled | IPV4 load
       script: 3_2_2.sh
     - name: 3.2.2 Ensure IP forwarding is disabled | IPV6 load
       script: 3_2_2_2.sh
-      # when: IPv6_is_enabled
+      # when: ipv6_is_enabled
   tags:
     - section3
     - level_1_server
@@ -126,13 +126,13 @@
       with_items:
         - { name: net.ipv6.conf.all.accept_source_route, value: 0 }
         - { name: net.ipv6.conf.default.accept_source_route, value: 0 }
-      when: IPv6_is_enabled
+      when: ipv6_is_enabled
     - name: 3.3.1 Ensure source routed packets are not accepted | ipv6 load
       shell: |
         sysctl -w net.ipv6.conf.all.accept_source_route=0
         sysctl -w net.ipv6.conf.default.accept_source_route=0
         sysctl -w net.ipv6.route.flush=1
-      when: IPv6_is_enabled
+      when: ipv6_is_enabled
   tags:
     - section3
     - level_1_server
@@ -169,13 +169,13 @@
       with_items:
         - { name: net.ipv6.conf.all.accept_redirects, value: 0 }
         - { name: net.ipv6.conf.default.accept_redirects, value: 0 }
-      when: IPv6_is_enabled
+      when: ipv6_is_enabled
     - name:
       shell: |
         sysctl -w net.ipv6.conf.all.accept_redirects=0
         sysctl -w net.ipv6.conf.default.accept_redirects=0
         sysctl -w net.ipv6.route.flush=1
-      when: IPv6_is_enabled
+      when: ipv6_is_enabled
   tags:
     - section3
     - level_1_server
@@ -350,7 +350,7 @@
         sysctl -w net.ipv6.conf.all.accept_ra=0
         sysctl -w net.ipv6.conf.default.accept_ra=0
         sysctl -w net.ipv6.route.flush=1
-  when: IPv6_is_enabled
+  when: ipv6_is_enabled
   tags:
     - section3
     - level_1_server
@@ -517,7 +517,7 @@
         rule: deny
         direction: in
         from: ::1
-      when: IPv6_is_enabled
+      when: ipv6_is_enabled
   when: enable_firewall
   tags:
     - section3

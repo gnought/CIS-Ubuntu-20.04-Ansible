@@ -311,7 +311,7 @@
     state: present
     dest: /etc/ssh/sshd_config
     regexp: "^MACs"
-    line: "MACs {{ ssh_MACs }}"
+    line: "MACs {{ ssh_macs_algo }}"
   tags:
     - section5
     - level_1_server
@@ -324,7 +324,7 @@
     state: present
     dest: /etc/ssh/sshd_config
     regexp: "^KexAlgorithms"
-    line: "KexAlgorithms {{ ssh_key_algorithms }}"
+    line: "KexAlgorithms {{ ssh_keys_algo }}"
   tags:
     - section5
     - level_1_server

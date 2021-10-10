@@ -148,8 +148,8 @@
     - name: 6.1.11 Ensure no unowned files or directories exist | Fix
       file:
         path: "{{ item }}"
-        owner: "{{ withoutOwnerFileDirOwner }}"
-        group: "{{ withoutGroupFilesDirGroup }}"
+        owner: "{{ without_owner_files_dir_owner }}"
+        group: "{{ without_group_files_dir_group }}"
       with_items: "{{ output_6_1_11.stdout_lines | d([]) }}"
   tags:
     - section6
@@ -169,8 +169,8 @@
     - name: 6.1.12 Ensure no ungrouped files or directories exist | Fix
       file:
         path: "{{ item }}"
-        owner: "{{ withoutOwnerFileDirOwner }}"
-        group: "{{ withoutGroupFilesDirGroup }}"
+        owner: "{{ without_owner_files_dir_owner }}"
+        group: "{{ without_group_files_dir_group }}"
       with_items: "{{ output_6_1_12.stdout_lines | d([]) }}"
   tags:
     - section6

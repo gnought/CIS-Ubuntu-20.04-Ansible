@@ -58,7 +58,7 @@
         name: ntp
         state: started
         enabled: yes
-  when: enableNTP
+  when: enable_ntp
   tags:
     - section2
     - level_1_server
@@ -94,7 +94,7 @@
         name: systemd-timesyncd.service
         enabled: yes
         state: started
-  when: enable_systemdtimesyncd
+  when: enable_systemd_timesyncd
   tags:
     - section2
     - level_1_server
@@ -120,7 +120,7 @@
         group: root
         mode: 0644
       notify: RestartChronyservice
-  when: chronyEnable
+  when: chrony_enable
   tags:
     - section2
     - level_1_server
@@ -164,7 +164,7 @@
   apt:
     name: "xserver-xorg*"
     state: absent
-  when: remove_XWindowSystem
+  when: remove_x_window_system
   tags:
     - section2
     - level_1_server
@@ -179,7 +179,7 @@
   apt:
     name: avahi-daemon
     state: absent
-  when: remove_AvahiServer
+  when: remove_avahi_server
   tags:
     - section2
     - level_1_server
@@ -195,7 +195,7 @@
   apt:
     name: cups
     state: absent
-  when: remove_CUPS
+  when: remove_cups
   tags:
     - section2
     - level_1_server
@@ -208,7 +208,7 @@
   apt:
     name: isc-dhcp-server
     state: absent
-  when: remove_DHCPServer
+  when: remove_dhcp_server
   tags:
     - section2
     - level_1_server
@@ -222,7 +222,7 @@
   apt:
     name: slapd
     state: absent
-  when: remove_LDAPserver
+  when: remove_ldap_server
   tags:
     - section2
     - level_1_server
@@ -236,7 +236,7 @@
   apt:
     name: rpcbind
     state: absent
-  when: remove_NFS
+  when: remove_nfs
   tags:
     - section2
     - level_1_server
@@ -249,7 +249,7 @@
   apt:
     name: bind9
     state: absent
-  when: remove_DNSServer
+  when: remove_dns_server
   tags:
     - section2
     - level_1_server
@@ -263,7 +263,7 @@
   apt:
     name: vsftpd
     state: absent
-  when: remove_FTPServer
+  when: remove_ftp_server
   tags:
     - section2
     - level_1_server
@@ -277,7 +277,7 @@
   apt:
     name: ["{{ web_server_name }}"]
     state: absent
-  when: remove_HTTPserver
+  when: remove_http_server
   tags:
     - section2
     - level_1_server
@@ -293,7 +293,7 @@
   apt:
     name: [dovecot-imapd, dovecot-pop3d]
     state: absent
-  when: remove_IMAPandPOP3server
+  when: remove_imap_pop3_server
   tags:
     - section2
     - level_1_server
@@ -308,7 +308,7 @@
   apt:
     name: samba
     state: absent
-  when: remove_Samba
+  when: remove_samba
   tags:
     - section2
     - level_1_server
@@ -321,7 +321,7 @@
   apt:
     name: squid
     state: absent
-  when: remove_HTTPProxyServer
+  when: remove_http_proxy_server
   tags:
     - section2
     - level_1_server
@@ -341,7 +341,7 @@
   apt:
     name: snmpd
     state: absent
-  when: remove_SNMPServer
+  when: remove_snmp_server
   tags:
     - section2
     - level_1_server
@@ -390,7 +390,7 @@
   apt:
     name: nis
     state: absent
-  when: remove_NISServer
+  when: remove_nis_server
   tags:
     - section2
     - level_1_server
@@ -406,7 +406,7 @@
   apt:
     name: nis
     state: absent
-  when: remove_NISClient
+  when: remove_nis_client
   tags:
     - section2
     - level_1_server
@@ -464,7 +464,7 @@
   apt:
     name: ldap-utils
     state: absent
-  when: remove_LDAPclient
+  when: remove_ldap_client
   tags:
     - section2
     - level_1_server
@@ -478,7 +478,7 @@
   apt:
     name: rpcbind
     state: absent
-  when: remove_RPC
+  when: remove_rpc
   tags:
     - section2
     - level_1_server

@@ -1,4 +1,4 @@
 {{ ansible_managed | comment }}
-{% for user in usersAllowedToSuAccess | d([]) %}
+{% for user in users_allowed_su_access | d([]) %}
 {{ user }}
 {% endfor %}

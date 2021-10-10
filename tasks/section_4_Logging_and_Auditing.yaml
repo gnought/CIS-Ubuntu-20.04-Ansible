@@ -400,8 +400,8 @@
     path: /etc/rsyslog.conf
     backup: yes
     block: |
-      *.* action(type="omfwd" target="{{ remoteSyslog.host }}" port="{{ remoteSyslog.port }}" protocol="{{ remoteSyslog.protocol }}" action.resumeRetryCount="100" queue.type="LinkedList" queue.size="1000")
-  when: remoteSyslog.enable
+      *.* action(type="omfwd" target="{{ remote_syslog.host }}" port="{{ remote_syslog.port }}" protocol="{{ remote_syslog.protocol }}" action.resumeRetryCount="100" queue.type="LinkedList" queue.size="1000")
+  when: remote_syslog.enable
   tags:
     - section4
     - level_1_server

@@ -21,7 +21,7 @@ custom_motd_file_path: "{{ inventory_dir }}/custom_templates/motd_custom.txt"
 
 # Section 2 Settings
 ##Setting for systemd-timesyncd
-enable_systemdtimesyncd: no #If you enable this make sure to disable NTP below, only one time service must be run in the server
+enable_systemd_timesyncd: no #If you enable this make sure to disable NTP below, only one time service must be run in the server
 timesync_timezone: Etc/UTC
 timesync_fallback_ntp_hosts:
   - 0.pool.ntp.org
@@ -30,7 +30,7 @@ timesync_fallback_ntp_hosts:
   - 3.pool.ntp.org
 
 ## Settings for NTP
-enableNTP: yes
+enable_ntp: yes
 time_synchronization_package_name: ntp
 time_synchronization_servers:
   - uri: "time1.google.com"
@@ -43,7 +43,7 @@ time_synchronization_servers:
     config: "iburst"
 
 ## Settings for chrony
-chronyEnable: no
+chrony_enable: no
 chrony_driftfile: /var/lib/chrony/chrony.drift
 chronyservers_preferred: []
 chronyservers:
@@ -55,34 +55,34 @@ chrony_keys: /etc/chrony/chrony.keys
 chrony_log_dir: /var/log/chrony
 
 web_server_name: nginx
-remove_HTTPserver: no
+remove_http_server: no
 remove_xinetd: yes
 remove_openbsd_inetd: yes
-remove_XWindowSystem: yes
-remove_AvahiServer: yes
-remove_CUPS: yes
-remove_DHCPServer: yes
-remove_LDAPserver: yes
-remove_NFS: yes
-remove_DNSServer: yes
-remove_FTPServer: yes
-remove_IMAPandPOP3server: yes
-remove_Samba: yes
-remove_HTTPProxyServer: yes
-remove_SNMPServer: yes
+remove_x_window_system: yes
+remove_avahi_server: yes
+remove_cups: yes
+remove_dhcp_server: yes
+remove_ldap_server: yes
+remove_nfs: yes
+remove_dns_server: yes
+remove_ftp_server: yes
+remove_imap_pop3_server: yes
+remove_samba: yes
+remove_http_proxy_server: yes
+remove_snmp_server: yes
 remove_rsyncservice: yes
-remove_NISServer: yes
-remove_NISClient: yes
+remove_nis_server: yes
+remove_nis_client: yes
 remove_rshclient: yes
 remove_talkclient: yes
 remove_telnetclient: yes
-remove_LDAPclient: yes
-remove_RPC: yes
+remove_ldap_client: yes
+remove_rpc: yes
 
 
 # Section 3 Settings
 disable_wifi: no
-IPv6_is_enabled: yes
+ipv6_is_enabled: yes
 enable_firewall: yes
 ## 3.5.1.6 Ensure firewall rules exist for all open ports | defined ports
 firewall_list_of_ports_to_allow:
@@ -92,7 +92,7 @@ firewall_allow_keep_alive: no
 
 # Section 4 Settings
 ## Ensure rsyslog is configured to send logs to a remote log host
-remoteSyslog:
+remote_syslog:
   enable: false
   host: 192.168.2.100
   port: 514
@@ -113,9 +113,9 @@ grub_backlog_limit: 8192
 ## 5.1.8 Ensure cron is restricted to authorized users
 allowd_hosts: "ALL: 0.0.0.0/0.0.0.0, 192.168.2.0/255.255.255.0"
 ## 5.2.13 Ensure only strong MAC algorithms are used
-ssh_MACs: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256"
+ssh_macs_algo: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256"
 ## 5.2.14 Ensure only strong Key Exchange algorithms are used
-ssh_key_algorithms: "curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256"
+ssh_keys_algo: "curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256"
 ## 5.2.17 Ensure SSH access is limited
 allowed_users: ubuntu root # list of allowed users, put a space between each user
 allowed_groups:
@@ -139,14 +139,14 @@ account_inactive: 30
 shell_timeout_sec: 900
 
 # Section 5 PAM config
-usersAllowedToSuAccess:
+users_allowed_su_access:
   - root
-adminGroup: root
+admin_group: root
 # Section 6
 
 # Section 6 settings
-withoutOwnerFileDirOwner: root
-withoutGroupFilesDirGroup: root
+without_owner_files_dir_owner: root
+without_group_files_dir_group: root
 outputfiles: /root/ #Output dir of some command
 disable_autofs: yes
 disable_usb: yes
