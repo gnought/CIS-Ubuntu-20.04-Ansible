@@ -1,2 +1,5 @@
+parseable: true
 skip_list:
+  - unnamed-task
   - '403'
+verbosity: 1
